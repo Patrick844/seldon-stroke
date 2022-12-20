@@ -1,4 +1,4 @@
-# Seldon with titanic dataset 
+# Seldon with stroke prediction dataset 
 
 ## Dataset
 
@@ -15,7 +15,7 @@ https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset
 
 <li> <ins> <strong>model folders</strong> </ins> :  Contains the different scaler / model and transformers </li>
 
-<li> <ins> <strong>notebook</strong> </ins> : titanic notebook, and seldon core  </li>
+<li> <ins> <strong>notebook</strong> </ins> : 2 training notebook, split data notebook and seldon client notebook  </li>
 
 <li> <ins> <strong>seldon</strong> </ins> :  Seldon Configuration files</li>
 </ul>
