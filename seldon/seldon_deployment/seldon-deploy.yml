@@ -1,1 +1,32 @@
 ---
+apiVersion: machinelearning.seldon.io/v1alpha2
+kind: SeldonDeployment
+metadata:
+  name: stroke
+  namespace: default
+spec:
+  predictors:
+  - name: model-clf
+    componentSpecs:
+    - spec:
+        containers:
+        - image: seldonio/stroke:0.2.6
+          imagePullPolicy: IfNotPresent
+          name: classifier
+          env:
+          - name: SELDON_LOG_LEVEL
+            value: INFO
+          resources:
+            requests:
+              memory: 1Mi
+          
+        terminationGracePeriodSeconds: 20
+    graph:
+      children: []
+      name: classifier
+      endpoint:
+        type: REST
+      type: MODEL
+    replicas: 1
+    annotations:
+      predictor_version: v1
