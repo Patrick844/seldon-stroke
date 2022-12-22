@@ -47,9 +47,7 @@ helm install minio minio/minio \
 <code> kubectl rollout status deployment -n minio-system minio </code>
 <li> Once Minio is installed forward the port to access it from a browser following these steps  
 </li>
-<li> <code> export POD_NAME=$(kubectl get pods --namespace minio-system -l "release=minio" -o jsonpath="{.items[0].metadata.name}" </code>
-</li>
-<li> <code> kubectl port-forward $POD_NAME 9000 --namespace minio-system </code>
+<li> <code> kubectl port-forward -n minio-system svc/minio 9000:9000  </code>
 </li>
 <li> Now you can access MinIO on your local machine via http://localhost:9000 use "minioadmin" as access-key and secret-key </li>
 <li> Next Step is to create two buckets named modelclf and modeltree and in each of them upload their respective files from the github repository </li>
@@ -60,9 +58,10 @@ helm install minio minio/minio \
 <ol>
 <li> cd into class wrapper folder
 <li> Build Docker Image with python3.8 seldon: <code> docker build . -f Dockerfile -t seldonio/&ltname&gt:&ltversion&gt</code> in titanic wrapper folder
+<li> Create a .s2i folder and add your environment as follow, the MODEL_NAME is the name of your .py file <li>
 <li> Use s2i to build docker image with required files and config required by seldon: <code> s2i build . &ltdocker-build-name&gt  seldonio/&ltname&gt:&ltversion&gt </code>
 <li> Load image into kind: <code> kind load docker-image &lts2i-build-name&gt --name seldon </code></li>
-<li> Repeat steps 3-4 for the two wrapper folder giving a different name for the s2i image
+<li> Repeat steps 3-5 for the two wrapper folder giving a different name for the s2i image
 <li> Verify the seldon_deployment.yml and change the <strong> image </strong> node
 <li> Apply Seldon Deployment yml file: <code>kubectl apply -f seldon_deployment.yml</code></li> in Seldon_Deployment folder
 <li> Check if pod running: <code> kubectl get pods</code></li>
@@ -91,6 +90,8 @@ helm install minio minio/minio \
 <li><code>kubectl port-forward -n seldon-monitoring svc/seldon-monitoring-prometheus 9090:9090</code></li>
 <li><code>kubectl port-forward service/grafana 3000:3000</code></li>
 <li> port forward grafana and prometheus for <strong> grafana use admin, admin as password </strong>
-<li> Grafana UI: connect to a data source, chose prometheus and as <strong>host the cluster IP of prometheus port 9090</strong> that can be found by doing <code> kubectl get services -A </code>
+<li> Grafana UI: connect to a data source, chose prometheus and as <strong>host the cluster IP of prometheus port 9090</strong> that can be found by doing <code> kubectl get services -A </code> 
+</li>
+</ol>
 
 

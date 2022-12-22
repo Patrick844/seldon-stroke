@@ -7,10 +7,11 @@ metadata:
 spec:
   predictors:
   - name: model-clf
+    traffic: 50
     componentSpecs:
     - spec:
         containers:
-        - image: seldonio/stroke:0.2.6
+        - image: seldonio/stroke:0.2.9
           imagePullPolicy: IfNotPresent
           name: classifier
           env:
@@ -30,3 +31,30 @@ spec:
     replicas: 1
     annotations:
       predictor_version: v1
+
+  - name: model-tree
+    traffic: 50
+    componentSpecs:
+    - spec:
+        containers:
+        - image: seldonio/stroke_tree:0.2.4
+          imagePullPolicy: IfNotPresent
+          name: classifier
+          env:
+          - name: SELDON_LOG_LEVEL
+            value: INFO
+          resources:
+            requests:
+              memory: 1Mi
+          
+        terminationGracePeriodSeconds: 20
+    graph:
+      children: []
+      name: classifier
+      endpoint:
+        type: REST
+      type: MODEL
+    replicas: 1
+    annotations:
+      predictor_version: v1
+

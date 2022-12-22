@@ -1,3 +1,4 @@
+---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -8,7 +9,7 @@ spec:
     matchLabels:
       app.kubernetes.io/managed-by: seldon-core
   podMetricsEndpoints:
-    - port: metricskubectl 
+    - port: metrics
       path: /prometheus
   namespaceSelector:
     any: true
