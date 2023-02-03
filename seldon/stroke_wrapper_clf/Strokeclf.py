@@ -41,10 +41,7 @@ class Strokeclf(object):
     
     def predict(self, X, features_name):
 
-        values = self.scaler.transform(values.reshape(1,-1))
-        result = self.clf.predict(values.reshape(1,-1))
-        self.metrics()
-        return result
+        
 
         # Initialize start time
         self.st = time.time()
@@ -100,11 +97,7 @@ class Strokeclf(object):
 
         # Scale values betwee, 0 and 1
         values = self.scaler.transform(values.reshape(1,-1))
-        result = self.clf.predict(values.reshape(1,-1))
-        self.metrics()
-        return result
-
-
+        
         # Predict
         result = self.clf.predict(values.reshape(1,-1))
 
