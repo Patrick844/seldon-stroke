@@ -146,7 +146,7 @@ helm install minio minio/minio \
 <li><code>kubectl port-forward -n seldon-monitoring svc/seldon-monitoring-prometheus 9090:9090</code></li>
 <li><code>kubectl port-forward service/grafana 3000:3000</code></li>
 <li> port forward grafana and prometheus for <strong> grafana use admin, admin as password </strong>
-<li> Grafana UI: connect to a data source, chose prometheus and as <strong>host the cluster IP of prometheus port 9090</strong> the IP address can be found can be found by doing <code> kubectl get services seldon-monitoring-prometheus -n seldon-monitoring  </code>  and in grafana data source url - http://ip-address:9090
+<li> Grafana UI: connect to a data source, chose prometheus and as <strong>host the cluster IP of prometheus port 9090</strong> the IP address can be found by doing <code> kubectl get services seldon-monitoring-prometheus -n seldon-monitoring  </code>  and in grafana data source url - http://ip-address:9090
 </li>
 </ol>
 
