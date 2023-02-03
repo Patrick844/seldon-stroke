@@ -70,7 +70,19 @@ Create your environment (I use conda):
     <code> kubectl apply -f seldon/ingress/ingress.yml </code>
 </div>
 
+## Install Seldon
 
+<div> 
+    <ol>
+        <li> Create Seldon namespace <code>kubectl create namespace seldon-system</code></li>
+        <li> Install Seldon <code> helm install seldon-core seldon-core-operator \
+    --repo https://storage.googleapis.com/seldon-charts \
+    --set usageMetrics.enabled=true \
+    --set istio.enabled=true \
+    --namespace seldon-system </code> </li>
+    <li> Verify your installation <code> kubectl get pods -n seldon-system </code> </li>
+    </ol>
+</div>
 
 ## Install MinIO
 
