@@ -15,8 +15,8 @@ class Strokeclf(object):
            secret_key='minioadmin',
             secure=False
               )
-        client.fget_object("modelclf","mode","temp/mode")
         client.fget_object("modelclf","clf","temp/clf")
+        client.fget_object("modelclf","mode","temp/mode")
         client.fget_object("modelclf","encoder_ordinal","temp/encoder_ordinal")
         client.fget_object("modelclf","encoder","temp/encoder")
         client.fget_object("modelclf","scaler","temp/scaler")
@@ -40,6 +40,11 @@ class Strokeclf(object):
         
     
     def predict(self, X, features_name):
+
+        values = self.scaler.transform(values.reshape(1,-1))
+        result = self.clf.predict(values.reshape(1,-1))
+        self.metrics()
+        return result
 
         # Initialize start time
         self.st = time.time()
@@ -95,6 +100,10 @@ class Strokeclf(object):
 
         # Scale values betwee, 0 and 1
         values = self.scaler.transform(values.reshape(1,-1))
+        result = self.clf.predict(values.reshape(1,-1))
+        self.metrics()
+        return result
+
 
         # Predict
         result = self.clf.predict(values.reshape(1,-1))
