@@ -11,7 +11,7 @@ spec:
     componentSpecs:
     - spec:
         containers:
-        - image: seldonio/stroke:0.2.9
+        - image: seldonio/clf:0.0.1
           imagePullPolicy: IfNotPresent
           name: classifier
           env:
@@ -37,7 +37,7 @@ spec:
     componentSpecs:
     - spec:
         containers:
-        - image: seldonio/stroke_tree:0.2.4
+        - image: seldonio/tree:0.0.1
           imagePullPolicy: IfNotPresent
           name: classifier
           env:

@@ -7,27 +7,25 @@ import time
 from minio import Minio
 
 
-class Strokeclf(object):
+class Stroketree(object):
     def __init__(self):
-        # Initialize MinIO
         client = client = Minio(
             "10.96.134.59:9000",
             access_key="minioadmin",
             secret_key="minioadmin",
             secure=False,
         )
-        client.fget_object("modelclf", "clf", "temp/clf")
-        client.fget_object("modelclf", "mode", "temp/mode")
-        client.fget_object("modelclf", "encoder_ordinal", "temp/encoder_ordinal")
-        client.fget_object("modelclf", "encoder", "temp/encoder")
-        client.fget_object("modelclf", "scaler", "temp/scaler")
-
+        client.fget_object("modeltree", "mode", "temp/mode")
+        client.fget_object("modeltree", "tree", "temp/tree")
+        client.fget_object("modeltree", "encoder_ordinal", "temp/encoder_ordinal")
+        client.fget_object("modeltree", "encoder", "temp/encoder")
+        client.fget_object("modeltree", "scaler", "temp/scaler")
         # Initializing Variables, model, encoders
         log = logging.getLogger()
         self.mode = joblib.load("temp/mode")
         log.info(f"Initializing mode to {self.mode}")
 
-        self.clf = joblib.load("temp/clf")
+        self.clf = joblib.load("temp/tree")
         log.info(f"Initializing Logistic Model")
 
         self.enc_ord = joblib.load("temp/encoder_ordinal")
@@ -40,7 +38,6 @@ class Strokeclf(object):
         log.info(f"Initializing scaler")
 
     def predict(self, X, features_name):
-        # Initialize start time
         self.st = time.time()
 
         log = logging.getLogger()
@@ -65,24 +62,21 @@ class Strokeclf(object):
             X[index_bmi] = self.mode
             log.info("Setting Missing Value for BMI")
 
-        # Convert to numpy
-        values = np.array(X)
+        # Convert to numpy and reshape
 
-        # Define Values to encode and transform
+        values = np.array(X)
         values_to_encode = values[
             [index_gender, index_ever_married, index_work_type, index_Residence_type]
         ]
         transform_enc = self.enc.transform(values_to_encode.reshape(1, -1))[0]
         log.info(f"one hot    {transform_enc}")
 
-        # Define values for ordinal encoder and transform
         values_to_ord_encode = values[[index_smoking_status]]
+
         transform_ord_enc = self.enc_ord.transform(values_to_ord_encode.reshape(1, -1))[
             0
         ]
         log.info(f"testing ord encoder {transform_ord_enc}")
-
-        # Dekete encoded values from the array and add the transformed values
         values = np.delete(
             values,
             [
@@ -99,19 +93,12 @@ class Strokeclf(object):
         for v in transform_ord_enc:
             values = np.append(values, v)
 
-        # Scale values betwee, 0 and 1
+        log.info(f"testing values {values}")
         values = self.scaler.transform(values.reshape(1, -1))
-
-        # Predict
+        log.info(f"scaling values    :     {values}")
         result = self.clf.predict(values.reshape(1, -1))
-
-        # End time of code
         self.et = time.time()
-
-        # Call Metrics
         self.metrics()
-
-        # Return prediction
         return result
 
     def metrics(self):
@@ -121,6 +108,6 @@ class Strokeclf(object):
         log.info("Exposing Custom Metrics")
 
         return [
-            # a Find execution time of code
+            # a counter which will increase by the given value
             {"type": "GAUGE", "key": "gauge_runtime", "value": self.et - self.st},
         ]
