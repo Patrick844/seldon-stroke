@@ -5,6 +5,21 @@
 https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset
 
 
+<br>
+
+## Prerequisite
+<div> 
+Make sure you have the following packages installed
+    <ul>
+        <li> Install <a href="https://kind.sigs.k8s.io/docs/user/quick-start/"> Kind </a> </li>
+        <li> Install <a href="https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/"> Kubectl </a> </li>
+        <li> Install <a href="https://docs.docker.com/"> Docker </a> </li>
+        <li> Install <a href="https://helm.sh/docs/intro/install/"> Helm </a> </li>
+    <ul>
+ </div>
+
+
+
 
 <br>
 
@@ -23,12 +38,38 @@ https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset
 
 ## Environment
 
-create your environment (I use conda): 
+Create your environment (I use conda): 
     <ul>
         <li> <code>conda create -n  stroke python=3.8 </code></li>
-        <li> <code> pip install -r requirement.txt</code></li>
+        <li> <code> pip install -r requirements.txt</code></li>
     </ul>
 </br>
+
+## Create your cluster
+
+<code> kind create cluster --name seldon --image kindest/node:v1.24.7@sha256:577c630ce8e509131eab1aea12c022190978dd2f745aac5eb1fe65c0807eb315</code>
+
+## Define Kubectl Context
+
+<code> kubectl cluster-info --context kind-seldon </code>
+
+## Configure Istio and Ingress
+
+<div>
+<strong>To set up Istio:</strong>
+    <ol>
+        <li> <code>curl -L https://istio.io/downloadIstio | sh - </code></li>
+        <li> <code> cd istio-&ltversion> </code> </li>
+        <li> <code> export PATH=$PWD/bin:$PATH </code> </li>
+        <li> <code> istioctl install --set profile=demo -y </code> </li>
+        <li> <code> kubectl label namespace default istio-injection=enabled </code> </li>
+    </ol>
+</div>
+<div> 
+   <strong> To set up ingress:</strong>
+    <code> kubectl apply -f seldon/ingress/ingress.yml </code>
+</div>
+
 
 
 ## Install MinIO

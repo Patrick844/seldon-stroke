@@ -1,1 +1,0 @@
-Instruction to use python class wrapper
